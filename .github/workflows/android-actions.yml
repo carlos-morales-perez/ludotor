@@ -1,7 +1,13 @@
 name: Android CI
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment to deploy to (e.g. production, staging)'
+        required: true
+    
+    
   # push:
   #   branches: 
   #     - "main"
