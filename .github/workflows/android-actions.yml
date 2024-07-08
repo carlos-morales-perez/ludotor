@@ -6,17 +6,16 @@ on:
       environment:
         description: 'The environment to deploy to (e.g. production, staging)'
         required: true
-    
-    
-  # push:
-  #   branches: 
-  #     - "main"
-  #     - "develop"
-  #     - "feature/*"
-  # pull_request:
-  #   branches: 
-  #     - "main"
-  #     - "develop"
+        
+  push:
+    branches: 
+      - "main"
+      - "develop"
+      - "feature/*"
+  pull_request:
+    branches: 
+      - "main"
+      - "develop"
 
 jobs:
   build:
