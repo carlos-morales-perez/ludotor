@@ -29,8 +29,8 @@ class NotificationRepository(private val notificationDao: NotificationDao) {
      * @param notification The Notification object to insert.
      * @return The row ID of the newly inserted notification.
      */
-    suspend fun insert(notification: Notification): Long {
-        return withContext(Dispatchers.IO) {
+    suspend fun insert(notification: Notification) {
+        withContext(Dispatchers.IO) {
             notificationDao.insertNotification(notification)
         }
     }

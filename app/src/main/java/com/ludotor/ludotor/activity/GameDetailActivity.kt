@@ -19,24 +19,29 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.ludotor.ludotor.R
 import com.ludotor.ludotor.adapter.LoanAdapter
 import com.ludotor.ludotor.data.Loan
+import com.ludotor.ludotor.data.Notification
 import com.ludotor.ludotor.data.Status
 import com.ludotor.ludotor.viewModel.BoardGameViewModel
 import com.ludotor.ludotor.viewModel.LoanViewModel
+import com.ludotor.ludotor.viewModel.NotificationViewModel
 import com.ludotor.ludotor.viewModel.StatusViewModel
 import java.sql.Date
 import java.util.Locale
+import kotlinx.coroutines.launch
 
 class GameDetailActivity : AppCompatActivity() {
 
     private val boardGameViewModel: BoardGameViewModel by viewModels()
     private val statusViewModel: StatusViewModel by viewModels()
     private val loanViewModel: LoanViewModel by viewModels()
+    private val notificationViewModel: NotificationViewModel by viewModels()
 
     private var currentGameId: Int = 0
 
@@ -347,7 +352,6 @@ class GameDetailActivity : AppCompatActivity() {
                 val loanTargetDateString = etLoanTargetDate?.text.toString().trim()
 
                 var loanTargetDate = Date(0)
-                var currentDateString = Date(0)
 
                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
@@ -355,9 +359,6 @@ class GameDetailActivity : AppCompatActivity() {
                     try {
                         val date = sdf.parse(loanTargetDateString)
                         loanTargetDate = Date(date.time)
-
-                        val auxDate = Calendar.getInstance().time
-                        currentDateString = Date(auxDate.time)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Toast.makeText(this, "Formato de fecha inválido", Toast.LENGTH_SHORT).show()
@@ -365,21 +366,45 @@ class GameDetailActivity : AppCompatActivity() {
                     }
                 }
 
+                val currentDateString = Date(Calendar.getInstance().time.time)
+
                 val newLoan = Loan(
                     boardGameId = currentGameId,
                     borrower = loanBorrowerText,
                     targetDate = loanTargetDate,
                     loanDate = currentDateString
                 )
-                loanViewModel.insertLoan(newLoan)
-                boardGameViewModel.loadGameById(currentGameId)
 
-                Toast.makeText(this, "Préstamo guardado", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
+                lifecycleScope.launch {
+                    try {
+                        val insertedLoanId = loanViewModel.insertLoanAndGetId(newLoan)
+
+                        if (insertedLoanId > 0) {
+                            val currentGameName = boardGameViewModel.currentGameWithDetails.value?.boardGame?.name ?: "Juego Desconocido"
+
+                            val newNotification = Notification(
+                                boardGameId = currentGameId,
+                                loanId = insertedLoanId.toInt(),
+                                targetDate = loanTargetDate,
+                                message = "$loanBorrowerText tiene programado de devolver $currentGameName hoy."
+                            )
+                            notificationViewModel.insertNotification(newNotification)
+
+                            Toast.makeText(this@GameDetailActivity, "Préstamo y notificación guardados", Toast.LENGTH_SHORT).show()
+                            boardGameViewModel.loadGameById(currentGameId)
+                            dialog.dismiss()
+                        } else {
+                            Toast.makeText(this@GameDetailActivity, "Error al guardar el préstamo", Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Toast.makeText(this@GameDetailActivity, "Error al guardar el préstamo", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+                }
             }
         }
         dialog.show()
     }
-
 
 }

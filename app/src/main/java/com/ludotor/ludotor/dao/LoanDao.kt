@@ -25,7 +25,7 @@ interface LoanDao {
     fun getAllLoans(): LiveData<List<Loan>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLoan(loan: Loan)
+    suspend fun insertLoan(loan: Loan): Long
 
     @Update
     suspend fun updateLoan(loan: Loan)

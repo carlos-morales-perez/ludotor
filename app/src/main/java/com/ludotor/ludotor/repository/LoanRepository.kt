@@ -46,10 +46,8 @@ class LoanRepository(private val loanDao: LoanDao) {
      * This operation is performed on a background thread.
      * @param loan The Loan object to insert.
      */
-    suspend fun insert(loan: Loan) {
-        withContext(Dispatchers.IO) {
-            loanDao.insertLoan(loan)
-        }
+    suspend fun insert(loan: Loan): Long {
+        return loanDao.insertLoan(loan)
     }
 
     /**
