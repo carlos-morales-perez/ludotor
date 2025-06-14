@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Ludotor</string>
+    <string name="open">Abrir menú</string>
+    <string name="close">Cerrar menú</string>
+    <string name="home">Inicio</string>
+    <string name="settings">Configuraciones</string>
+</resources>
