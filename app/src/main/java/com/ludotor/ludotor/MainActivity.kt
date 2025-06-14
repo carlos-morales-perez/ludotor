@@ -14,6 +14,7 @@ import com.ludotor.ludotor.databinding.ActivityMainBinding
 import androidx.activity.viewModels
 import com.ludotor.ludotor.activity.EditGameActivity
 import com.ludotor.ludotor.activity.GameDetailActivity
+import com.ludotor.ludotor.activity.SettingsActivity
 import com.ludotor.ludotor.adapter.BoardGameAdapter
 import com.ludotor.ludotor.viewModel.BoardGameViewModel
 
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                // Acción de configuraciones
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.action_about -> {

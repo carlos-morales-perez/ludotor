@@ -23,7 +23,4 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
         repository.insert(status)
     }
 
-//     fun getStatusesForGame(boardGameId: Int): LiveData<List<Status>> {
-//         return repository.getStatusesForBoardGame(boardGameId)
-//     }
 }

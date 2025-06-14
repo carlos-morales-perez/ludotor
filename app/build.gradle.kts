@@ -58,4 +58,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.room.ktx)
+    implementation (libs.androidx.preference.ktx)
 }
