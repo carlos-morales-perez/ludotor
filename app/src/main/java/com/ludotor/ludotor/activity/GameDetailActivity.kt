@@ -49,6 +49,7 @@ class GameDetailActivity : AppCompatActivity() {
     private lateinit var hasSleevesLayout: LinearLayout
     private lateinit var dateIncorporationLayout: LinearLayout
     private lateinit var commentLayout: LinearLayout
+    private lateinit var loansLayout: LinearLayout
     // private lateinit var gameImageField: EditText // Si tienes campo para imagen
 
      private lateinit var loansRecyclerView: RecyclerView // Si usas RecyclerView
@@ -77,6 +78,7 @@ class GameDetailActivity : AppCompatActivity() {
         hasSleevesLayout = findViewById(R.id.ll_has_sleeve)
         dateIncorporationLayout = findViewById(R.id.ll_date_incorporation)
         commentLayout = findViewById(R.id.ll_status)
+        loansLayout = findViewById(R.id.ll_status_list)
 
          loansRecyclerView = findViewById(R.id.rv_status_list)
          loanAdapter = LoanAdapter()
@@ -99,6 +101,7 @@ class GameDetailActivity : AppCompatActivity() {
         boardGameViewModel.loadGameById(currentGameId)
         boardGameViewModel.currentGameWithDetails.observe(this) { gameWithDetails ->
             gameWithDetails?.let { gwd ->
+
                 val game = gwd.boardGame
                 nameField.text = game.name
                 playersField.text = "${game.playerMin} - ${game.playerMax}"
@@ -143,8 +146,10 @@ class GameDetailActivity : AppCompatActivity() {
 
                 if (gwd.loans.isNotEmpty()) {
                     loanAdapter.submitList(gwd.loans)
+                    loansLayout.visibility = View.VISIBLE
                 } else {
                     loanAdapter.submitList(emptyList())
+                    loansLayout.visibility = View.GONE
                 }
             }
         }

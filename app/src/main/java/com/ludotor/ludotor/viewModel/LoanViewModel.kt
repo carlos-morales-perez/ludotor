@@ -21,4 +21,6 @@ class LoanViewModel(application: Application) : AndroidViewModel(application) {
         repository.insert(loan)
     }
 
+    fun getAllLoansForBoardGame(boardGameId: Int) = repository.getLoansForBoardGame(boardGameId)
+
 }

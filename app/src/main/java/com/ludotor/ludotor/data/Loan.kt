@@ -2,6 +2,7 @@ package com.ludotor.ludotor.data
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.sql.Date
 
@@ -14,7 +15,8 @@ import java.sql.Date
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index(value = ["boardGameId"])]
 )
 
 data class Loan(
