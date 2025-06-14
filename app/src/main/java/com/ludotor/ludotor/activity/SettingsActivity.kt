@@ -3,6 +3,7 @@ package com.ludotor.ludotor.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 import com.ludotor.ludotor.R
 import com.ludotor.ludotor.fragment.SettingsFragment
@@ -13,6 +14,12 @@ class SettingsActivity : AppCompatActivity() {
         applySavedTheme()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        val toolbar: Toolbar = findViewById(R.id.settings_toolbar)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         if (savedInstanceState == null) {
             supportFragmentManager

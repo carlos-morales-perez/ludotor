@@ -11,6 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -19,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -55,10 +57,10 @@ class GameDetailActivity : AppCompatActivity() {
     private lateinit var dateIncorporationLayout: LinearLayout
     private lateinit var commentLayout: LinearLayout
     private lateinit var loansLayout: LinearLayout
-    // private lateinit var gameImageField: EditText // Si tienes campo para imagen
+    private lateinit var gameImageField: ImageView
 
-     private lateinit var loansRecyclerView: RecyclerView // Si usas RecyclerView
-     private lateinit var loanAdapter: LoanAdapter // Si usas RecyclerView
+    private lateinit var loansRecyclerView: RecyclerView
+    private lateinit var loanAdapter: LoanAdapter
 
     private lateinit var editGameLauncher: ActivityResultLauncher<Intent>
 
@@ -84,11 +86,12 @@ class GameDetailActivity : AppCompatActivity() {
         dateIncorporationLayout = findViewById(R.id.ll_date_incorporation)
         commentLayout = findViewById(R.id.ll_status)
         loansLayout = findViewById(R.id.ll_status_list)
+        gameImageField = findViewById(R.id.iv_game_image)
 
-         loansRecyclerView = findViewById(R.id.rv_status_list)
-         loanAdapter = LoanAdapter()
-         loansRecyclerView.adapter = loanAdapter
-         loansRecyclerView.layoutManager = LinearLayoutManager(this)
+        loansRecyclerView = findViewById(R.id.rv_status_list)
+        loanAdapter = LoanAdapter()
+        loansRecyclerView.adapter = loanAdapter
+        loansRecyclerView.layoutManager = LinearLayoutManager(this)
 
         currentGameId = intent.getIntExtra("game_id", 0)
 
@@ -111,7 +114,13 @@ class GameDetailActivity : AppCompatActivity() {
                 nameField.text = game.name
                 playersField.text = "${game.playerMin} - ${game.playerMax}"
                 playTimeField.text = "${game.playTime} minutos"
-                // gameImageField.setText(it.gameImage)
+
+                if (game.gameImage.isNotEmpty()) {
+//                    gameImageField.setImageResource(R.drawable.ic_games)
+                    gameImageField.setImageURI(game.gameImage.toUri())
+                } else {
+                    gameImageField.setImageResource(R.drawable.ic_games)
+                }
 
                 gwd.status?.let { status ->
 

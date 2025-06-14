@@ -13,7 +13,7 @@ class LoanViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: LoanRepository
 
     init {
-        val loanDao = AppDatabase.getDatabase(application, viewModelScope).loanDao()
+        val loanDao = AppDatabase.getDatabase(application).loanDao()
         repository = LoanRepository(loanDao)
     }
 

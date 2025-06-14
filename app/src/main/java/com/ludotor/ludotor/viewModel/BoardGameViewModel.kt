@@ -32,7 +32,7 @@ class BoardGameViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     init {
-        val boardGameDao = AppDatabase.getDatabase(application, viewModelScope).boardGameDao()
+        val boardGameDao = AppDatabase.getDatabase(application).boardGameDao()
         repository = BoardGameRepository(boardGameDao)
         allGames = repository.allGames
     }

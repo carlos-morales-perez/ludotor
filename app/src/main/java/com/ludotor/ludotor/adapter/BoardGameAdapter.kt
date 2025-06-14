@@ -3,6 +3,7 @@ package com.ludotor.ludotor.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.ludotor.ludotor.R
 import com.ludotor.ludotor.data.BoardGame
@@ -12,7 +13,6 @@ class BoardGameAdapter(
     private var games: List<BoardGame>,
     private var onItemClicked: (BoardGame) -> Unit)
         : RecyclerView.Adapter<BoardGameAdapter.GameViewHolder>() {
-
 
     inner class GameViewHolder(val binding: ItemBoardGameBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -31,7 +31,12 @@ class BoardGameAdapter(
             tvGameName.text = game.name
             tvPlayers.text = "Jugadores: ${game.playerMin} - ${game.playerMax} jugadores"
             tvPlayTime.text = "Duración: ${game.playTime} minutos"
-            imgGamePhoto.setImageResource(R.drawable.ic_games)
+            if (game.gameImage.isNotEmpty()) {
+//                imgGamePhoto.setImageResource(R.drawable.ic_games)
+                imgGamePhoto.setImageURI(game.gameImage.toUri())
+            } else {
+                imgGamePhoto.setImageResource(R.drawable.ic_games)
+            }
 
             root.setOnClickListener {
                 onItemClicked(game)

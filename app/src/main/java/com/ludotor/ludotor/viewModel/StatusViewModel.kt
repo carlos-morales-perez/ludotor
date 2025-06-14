@@ -14,7 +14,7 @@ class StatusViewModel(application: Application) : AndroidViewModel(application) 
     private val repository: StatusRepository
 
     init {
-        val statusDao = AppDatabase.getDatabase(application, viewModelScope).statusDao() // Ajusta según tu inicialización de BD
+        val statusDao = AppDatabase.getDatabase(application).statusDao() // Ajusta según tu inicialización de BD
         repository = StatusRepository(statusDao)
 
     }

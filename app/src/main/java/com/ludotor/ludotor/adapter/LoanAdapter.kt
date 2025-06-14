@@ -43,11 +43,11 @@ class LoanAdapter(
                 binding.tvLoanTargetDate.text = "N/A"
             }
 
-            if (System.currentTimeMillis() >= loan.targetDate.time) {
-                binding.tvLoanStatusNotification.text = "Sí"
-            } else {
-                binding.tvLoanStatusNotification.text = "No"
-            }
+//            if (System.currentTimeMillis() >= loan.targetDate.time) {
+//                binding.tvLoanStatusNotification.text = "Sí"
+//            } else {
+//                binding.tvLoanStatusNotification.text = "No"
+//            }
 
 //            if (loan.returnDate != null) {
 //                binding.llReturnDateInfo.visibility = View.VISIBLE

@@ -10,5 +10,5 @@ data class BoardGame(
     val playerMin: Int,
     val playerMax: Int,
     val playTime: String,
-    val gameImage: String? = null
+    val gameImage: String = ""
 )

@@ -4,16 +4,24 @@ import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.ludotor.ludotor.R
+import com.ludotor.ludotor.worker.NotificationWorker
 import java.util.Calendar
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -29,7 +37,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         setPreferencesFromResource(R.xml.preferences, rootKey)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-        // Configurar el TimePicker para la preferencia de hora
         val timePreference: Preference? = findPreference(KEY_NOTIFICATION_TIME)
         timePreference?.setOnPreferenceClickListener {
             showTimePickerDialog()
@@ -41,8 +48,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     override fun onResume() {
         super.onResume()
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-        updateThemeSummary() // Actualizar resumen del tema al mostrar
-        updateNotificationTimeSummary() // Actualizar resumen de la hora
+        updateThemeSummary()
+        updateNotificationTimeSummary()
     }
 
     override fun onPause() {
@@ -59,17 +66,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
             KEY_NOTIFICATION_TIME -> {
                 updateNotificationTimeSummary()
-                // Aquí deberías (re)programar tus notificaciones con la nueva hora
-                // scheduleDailyReminder(requireContext()) // Ejemplo
+                scheduleOrCancelDailyReminder()
             }
             KEY_NOTIFICATIONS_ENABLED -> {
-                // Si se deshabilitan, cancelar notificaciones programadas
-                // Si se habilitan, programarlas (quizás con la hora guardada)
                 val enabled = sharedPreferences?.getBoolean(KEY_NOTIFICATIONS_ENABLED, true) ?: true
                 if (enabled) {
-                    // scheduleDailyReminder(requireContext())
+                    scheduleOrCancelDailyReminder()
                 } else {
-                    // cancelDailyReminder(requireContext())
+                    scheduleOrCancelDailyReminder()
                 }
             }
         }
@@ -81,18 +85,15 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             "system" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
-        // No es necesario recrear la actividad aquí si el tema se aplica en toda la app
-        // y se maneja correctamente en el Application o Activity base.
     }
 
     private fun updateThemeSummary() {
         val themePreference: ListPreference? = findPreference(KEY_THEME)
-        themePreference?.summary = themePreference?.entry // Muestra la opción seleccionada
+        themePreference?.summary = themePreference.entry
     }
 
     private fun showTimePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val currentHour = sharedPreferences.getInt("notification_hour", 20) // Hora por defecto 8 PM
+        val currentHour = sharedPreferences.getInt("notification_hour", 20)
         val currentMinute = sharedPreferences.getInt("notification_minute", 0)
 
         val picker = MaterialTimePicker.Builder()
@@ -107,11 +108,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 .putInt("notification_hour", picker.hour)
                 .putInt("notification_minute", picker.minute)
                 .apply()
-            // onSharedPreferenceChanged será llamado para KEY_NOTIFICATION_TIME si lo registras como Preference
-            // o llamas a updateNotificationTimeSummary manualmente
             updateNotificationTimeSummary()
-            // Aquí deberías (re)programar tus notificaciones con la nueva hora
-            // scheduleDailyReminder(requireContext()) // Ejemplo
+            scheduleOrCancelDailyReminder()
         }
         picker.show(parentFragmentManager, "TIME_PICKER_TAG")
     }
@@ -134,17 +132,53 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    // --- Funciones de ejemplo para programar/cancelar notificaciones ---
-    // Deberás implementar esto usando WorkManager para notificaciones persistentes
-    // private fun scheduleDailyReminder(context: Context) {
-    //     val hour = sharedPreferences.getInt("notification_hour", 20)
-    //     val minute = sharedPreferences.getInt("notification_minute", 0)
-    //     Log.d("SettingsFragment", "Programando recordatorio para las $hour:$minute")
-    //     // Implementar con WorkManager
-    // }
+    private fun scheduleOrCancelDailyReminder() {
+        val workManager = WorkManager.getInstance(requireContext())
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val notificationsEnabled = sharedPreferences.getBoolean(KEY_NOTIFICATIONS_ENABLED, true)
 
-    // private fun cancelDailyReminder(context: Context) {
-    //     Log.d("SettingsFragment", "Cancelando recordatorio diario")
-    //     // Implementar con WorkManager
-    // }
+        val uniqueWorkName = "dailyLoanReminder"
+
+        if (notificationsEnabled) {
+            val hour = sharedPreferences.getInt("notification_hour", 20)
+            val minute = sharedPreferences.getInt("notification_minute", 0)
+
+            val currentTime = Calendar.getInstance()
+            val dueTime = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, hour)
+                set(Calendar.MINUTE, minute)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+
+            if (dueTime.before(currentTime)) {
+                dueTime.add(Calendar.HOUR_OF_DAY, 24)
+            }
+
+            val initialDelay = dueTime.timeInMillis - currentTime.timeInMillis
+
+            val constraints = Constraints.Builder()
+//                .setRequiresDeviceIdle(true)
+                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+                .build()
+
+            Log.d("Scheduler", "Current Time: ${currentTime.time}")
+            Log.d("Scheduler", "Due Time Set: ${dueTime.time}")
+            Log.d("Scheduler", "Calculated Initial Delay (ms): $initialDelay")
+            Log.d("Scheduler", "Calculated Initial Delay (minutes): ${TimeUnit.MILLISECONDS.toMinutes(initialDelay)}")
+
+            val dailyWorkRequest = PeriodicWorkRequestBuilder<NotificationWorker>(1, TimeUnit.DAYS)
+                .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+                .setConstraints(constraints)
+                .build()
+
+            workManager.enqueueUniquePeriodicWork(
+                uniqueWorkName,
+                ExistingPeriodicWorkPolicy.REPLACE,
+                dailyWorkRequest
+            )
+        } else {
+            workManager.cancelUniqueWork(uniqueWorkName)
+        }
+    }
 }

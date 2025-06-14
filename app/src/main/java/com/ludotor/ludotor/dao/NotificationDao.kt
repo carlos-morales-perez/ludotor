@@ -10,6 +10,7 @@ import androidx.room.Update
 import com.ludotor.ludotor.data.BoardGame
 import com.ludotor.ludotor.data.Notification
 import kotlinx.coroutines.flow.Flow
+import java.sql.Date
 
 @Dao
 interface NotificationDao {
@@ -20,8 +21,11 @@ interface NotificationDao {
     @Query("SELECT * FROM notification WHERE notificationId = :notificationId")
     fun getNotificationById(notificationId: Int): LiveData<Notification?>
 
+    @Query("SELECT * FROM notification WHERE targetDate BETWEEN :startDate AND :endDate")
+    suspend fun getNotificationByTargetDate(startDate: Date, endDate: Date): List<Notification?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNotification(notification: Notification): Long // Devolver Long (rowId) puede ser útil
+    suspend fun insertNotification(notification: Notification): Long
 
     @Update
     suspend fun updateNotification(notification: Notification)

@@ -13,7 +13,7 @@ class NotificationViewModel(application: Application) : AndroidViewModel(applica
     private val notificationRepository: NotificationRepository
 
     init {
-        val notificationDao = AppDatabase.getDatabase(application, viewModelScope).notificationDao()
+        val notificationDao = AppDatabase.getDatabase(application).notificationDao()
         notificationRepository = NotificationRepository(notificationDao)
     }
 

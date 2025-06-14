@@ -12,7 +12,7 @@ import com.ludotor.ludotor.dao.StatusDao
 import com.ludotor.ludotor.utils.Converters
 import kotlinx.coroutines.CoroutineScope
 
-@Database(entities = [BoardGame::class, Notification::class, Status::class, Loan::class], version = 9)
+@Database(entities = [BoardGame::class, Notification::class, Status::class, Loan::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun boardGameDao(): BoardGameDao
@@ -23,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         @Volatile private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context, viewModelScope: CoroutineScope): AppDatabase {
+        fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 Room.databaseBuilder(
                     context.applicationContext,
