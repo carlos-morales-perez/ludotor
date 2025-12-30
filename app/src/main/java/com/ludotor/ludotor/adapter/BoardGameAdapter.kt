@@ -32,7 +32,6 @@ class BoardGameAdapter(
             tvPlayers.text = "Jugadores: ${game.playerMin} - ${game.playerMax} jugadores"
             tvPlayTime.text = "Duración: ${game.playTime} minutos"
             if (game.gameImage.isNotEmpty()) {
-//                imgGamePhoto.setImageResource(R.drawable.ic_games)
                 imgGamePhoto.setImageURI(game.gameImage.toUri())
             } else {
                 imgGamePhoto.setImageResource(R.drawable.ic_games)

@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class LoanAdapter(
-    // private val onItemClicked: (Loan) -> Unit, // Opcional: para manejar clics en el ítem
-    // private val onMarkAsReturnedClicked: (Loan) -> Unit // Opcional: para el botón de devolver
 ) : ListAdapter<Loan, LoanAdapter.LoanViewHolder>(LoanDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LoanViewHolder {
@@ -42,33 +40,6 @@ class LoanAdapter(
             } ?: run {
                 binding.tvLoanTargetDate.text = "N/A"
             }
-
-//            if (System.currentTimeMillis() >= loan.targetDate.time) {
-//                binding.tvLoanStatusNotification.text = "Sí"
-//            } else {
-//                binding.tvLoanStatusNotification.text = "No"
-//            }
-
-//            if (loan.returnDate != null) {
-//                binding.llReturnDateInfo.visibility = View.VISIBLE
-//                binding.tvLoanReturnDate.text = dateFormat.format(loan.returnDate)
-//                // Opcional: Ocultar botón de "Marcar como devuelto" si ya está devuelto
-//                // binding.btnMarkReturned.visibility = View.GONE
-//            } else {
-//                binding.llReturnDateInfo.visibility = View.GONE
-//                // Opcional: Mostrar botón de "Marcar como devuelto"
-//                // binding.btnMarkReturned.visibility = View.VISIBLE
-//            }
-
-            // Opcional: Listener para el ítem completo
-            // binding.root.setOnClickListener {
-            //     onItemClicked(loan)
-            // }
-
-            // Opcional: Listener para el botón de "Marcar como devuelto"
-            // binding.btnMarkReturned.setOnClickListener {
-            //    onMarkAsReturnedClicked(loan)
-            // }
         }
     }
 }

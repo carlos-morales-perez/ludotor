@@ -9,12 +9,12 @@ import com.ludotor.ludotor.data.Status
 import com.ludotor.ludotor.repository.StatusRepository
 import kotlinx.coroutines.launch
 
-class StatusViewModel(application: Application) : AndroidViewModel(application) { // O ViewModel si no necesitas Application context
+class StatusViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: StatusRepository
 
     init {
-        val statusDao = AppDatabase.getDatabase(application).statusDao() // Ajusta según tu inicialización de BD
+        val statusDao = AppDatabase.getDatabase(application).statusDao()
         repository = StatusRepository(statusDao)
 
     }

@@ -158,7 +158,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             val initialDelay = dueTime.timeInMillis - currentTime.timeInMillis
 
             val constraints = Constraints.Builder()
-//                .setRequiresDeviceIdle(true)
                 .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
                 .build()
 
