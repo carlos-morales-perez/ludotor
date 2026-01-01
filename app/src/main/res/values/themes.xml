@@ -1,0 +1,63 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Ludotor" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/app_primary</item>
+        <item name="colorPrimaryVariant">@color/app_primary_variant</item>
+        <item name="colorOnPrimary">@color/app_on_primary</item>
+
+        <!-- Colores secundarios -->
+        <item name="colorSecondary">@color/app_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_secondary</item>
+        <item name="colorOnSecondary">@color/app_on_secondary</item>
+
+        <!-- Colores de error -->
+        <item name="colorError">@color/app_error</item>
+        <item name="colorOnError">@color/app_on_error</item>
+
+        <!-- Colores de fondo y superficie -->
+        <item name="android:colorBackground">@color/app_background</item>
+        <item name="colorOnBackground">@color/app_on_background</item>
+        <item name="colorSurface">@color/app_surface</item>
+        <item name="colorOnSurface">@color/app_on_surface</item>
+
+        <!-- Status Bar -->
+        <item name="android:windowLightStatusBar" >?attr/colorPrimaryVariant</item>
+
+        <!-- Navigation Bar (barra inferior) -->
+        <item name="android:navigationBarColor">?attr/colorPrimary</item>
+
+        <!-- Para componentes de Preferencia -->
+        <item name="preferenceTheme">@style/AppPreferenceThemeOverlay</item>
+        <item name="colorControlActivated">?attr/colorSecondary</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:divider">@color/divider_color</item>
+
+
+    </style>
+
+    <!-- Tema para SettingsActivity si necesitas alguna variación específica -->
+    <style name="Theme.Ludotor.Settings" parent="Theme.Ludotor">
+        <item name="colorSecondary">@color/purple_200</item>
+        <item name="colorSecondaryVariant">@color/purple_200</item>
+    </style>
+
+    <!-- Overlay para Preferencias, asegurando que use los colores semánticos -->
+    <style name="AppPreferenceThemeOverlay" parent="PreferenceThemeOverlay.v14.Material">
+        <!-- Revisa si necesitas parent="PreferenceThemeOverlay" para M3 si es tu base -->
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="colorPrimary">?attr/colorPrimary</item>
+        <item name="colorSecondary">?attr/colorSecondary</item>
+        <item name="android:textColorPrimary">?attr/colorOnSurface</item>
+        <item name="android:textColorSecondary">?attr/colorOnSurfaceVariant</item> <!-- colorOnSurfaceVariant es un rol de M3 -->
+        <item name="colorControlActivated">?attr/colorSecondary</item>
+        <item name="android:divider">@color/divider_color</item>
+    </style>
+
+    <style name="Widget.App.NavigationView" parent="Widget.MaterialComponents.NavigationView">
+        <item name="itemTextColor">@color/menu_item_text_color</item>
+        <item name="itemIconTint">@color/menu_item_text_color</item> <!-- O un color diferente para los iconos -->
+    </style>
+
+</resources>

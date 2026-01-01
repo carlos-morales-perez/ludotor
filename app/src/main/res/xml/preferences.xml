@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="Apariencia">
+
+        <ListPreference
+            app:key="theme_preference"
+            app:title="Tema de la aplicación"
+            app:summary="Elige el tema visual de la aplicación"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:defaultValue="system" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Notificaciones">
+
+        <SwitchPreferenceCompat
+            app:key="notifications_enabled"
+            app:title="Habilitar notificaciones"
+            app:summary="Permitir notificaciones de préstamos vencidos"
+            app:defaultValue="true" />
+
+        <Preference
+            app:key="notification_time_preference"
+            app:title="Hora de recordatorio"
+            app:summary="Establece la hora para recibir recordatorios"
+            app:dependency="notifications_enabled" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

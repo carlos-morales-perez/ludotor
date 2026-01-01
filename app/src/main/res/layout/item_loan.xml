@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Prestado a:"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                />
+
+            <TextView
+                android:id="@+id/tv_borrower"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                tools:text="Darliana" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha de préstamo:  "
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                />
+
+            <TextView
+                android:id="@+id/tv_loan_date"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                tools:text="13/06/2025" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha de devolución:"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                />
+
+            <TextView
+                android:id="@+id/tv_loan_target_date"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+                tools:text="15/06/2025" />
+        </LinearLayout>
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:padding="8dp">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Devolución notificada:"-->
+<!--                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"-->
+<!--                />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_loan_status_notification"-->
+<!--                android:paddingLeft="10dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"-->
+<!--                tools:text="No" />-->
+<!--        </LinearLayout>-->
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

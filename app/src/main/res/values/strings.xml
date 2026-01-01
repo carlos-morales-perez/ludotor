@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Ludotor</string>
+    <string name="open">Abrir menú</string>
+    <string name="close">Cerrar menú</string>
+    <string name="home">Inicio</string>
+    <string name="settings">Configuraciones</string>
+
+    <string-array name="theme_entries">
+        <item>Claro</item>
+        <item>Oscuro</item>
+        <item>Seguir configuración del sistema</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
+</resources>
