@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.ludotor.ludotor"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ludotor.ludotor"
         minSdk = 27
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -50,7 +50,6 @@ dependencies {
     implementation(libs.appcompat)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
